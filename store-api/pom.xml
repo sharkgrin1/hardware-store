@@ -11,4 +11,11 @@
     </parent>
     <artifactId>store-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
