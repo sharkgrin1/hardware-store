@@ -22,6 +22,9 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="order_id" type="INT">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="order_items" baseColumnNames="user_id"
@@ -31,6 +34,10 @@
         <addForeignKeyConstraint baseTableName="order_items" baseColumnNames="product_id"
                                  constraintName="FK__order_items__product_id"
                                  referencedTableName="products"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="order_items" baseColumnNames="order_id"
+                                 constraintName="FK__order_items__order_id"
+                                 referencedTableName="orders"
                                  referencedColumnNames="id"/>
     </changeSet>
 
