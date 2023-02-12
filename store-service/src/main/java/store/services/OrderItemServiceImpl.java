@@ -32,6 +32,7 @@ public class OrderItemServiceImpl implements OrderItemService {
                     x.getId(),
                     x.getUserId(),
                     product.getName(),
+                    product.getPrice(),
                     product.getPrice().multiply(new BigDecimal(x.getQuantity())),
                     x.getQuantity()
             );
