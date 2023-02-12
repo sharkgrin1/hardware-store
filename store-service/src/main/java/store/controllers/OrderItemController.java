@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = HttpConstants.PATH_ITEMS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = HttpConstants.PATH_ITEMS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
@@ -34,7 +34,7 @@ public class OrderItemController {
         return orderItemService.findUnpaidByUserId(userId);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CUSTOMER')")
     public void create(@RequestBody @Valid OrderItem item) {
         orderItemService.create(item);

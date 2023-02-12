@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = HttpConstants.PATH_PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = HttpConstants.PATH_PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
     private final ProductService productService;
     private final OrderItemService orderItemService;
@@ -35,13 +35,13 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public Product create(@RequestBody @Valid Product product) {
         return productService.create(product);
     }
 
-    @PutMapping
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public Product update(@RequestBody @Valid Product product) {
         return productService.update(product);
