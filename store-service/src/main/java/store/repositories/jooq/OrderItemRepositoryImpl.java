@@ -64,4 +64,12 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
                 .where(ORDER_ITEMS.ID.in(ids))
                 .execute();
     }
+
+    @Override
+    public List<OrderItem> findPaidByProductIds(List<Integer> productIds) {
+        return  dsl.selectFrom(ORDER_ITEMS)
+                .where(ORDER_ITEMS.PRODUCT_ID.in(productIds).and(ORDER_ITEMS.ORDER_ID.isNotNull()))
+                .fetch()
+                .map(x -> x.into(OrderItem.class));
+    }
 }

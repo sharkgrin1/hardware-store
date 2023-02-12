@@ -34,6 +34,12 @@ public class OrderItemController {
         return orderItemService.findUnpaidByUserId(userId);
     }
 
+    @GetMapping(path = HttpConstants.PATH_PAID, consumes = MediaType.ALL_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<OrderItem> findPaidByProductIds(@RequestParam(HttpConstants.PARAM_PRODUCT_IDS) List<Integer> productIds) {
+        return orderItemService.findPaidByProductIds(productIds);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CUSTOMER')")
     public void create(@RequestBody @Valid OrderItem item) {

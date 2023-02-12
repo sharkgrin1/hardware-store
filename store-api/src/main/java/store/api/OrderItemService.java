@@ -15,4 +15,6 @@ public interface OrderItemService {
     void deleteUnpaidByProductId(int productId);
 
     void updateOrderId(List<Integer> ids, int orderId);
+
+    List<OrderItem> findPaidByProductIds(List<Integer> productIds);
 }
