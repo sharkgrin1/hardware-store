@@ -73,4 +73,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     public void updateOrderId(List<Integer> ids, int orderId) {
         orderItemRepository.updateOrderId(ids, orderId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public List<OrderItem> findPaidByProductIds(List<Integer> productIds) {
+        return orderItemRepository.findPaidByProductIds(productIds);
+    }
 }
