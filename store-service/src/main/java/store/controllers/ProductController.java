@@ -44,7 +44,11 @@ public class ProductController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public Product update(@RequestBody @Valid Product product) {
-        return productService.update(product);
+        final var updated = productService.update(product);
+        if (updated.isHidden()) {
+            orderItemService.deleteUnpaidByProductId(updated.getId());
+        }
+        return updated;
     }
 
     @DeleteMapping(HttpConstants.PATH_PARAM_ID)

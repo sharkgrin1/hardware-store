@@ -22,6 +22,9 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="hidden" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

@@ -15,6 +15,7 @@ public class Product {
     private BigDecimal price;
     @Min(0)
     private int quantity;
+    private boolean hidden;
 
     public int getId() {
         return id;
@@ -46,5 +47,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }
