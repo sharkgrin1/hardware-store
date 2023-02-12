@@ -1,0 +1,30 @@
+<div class="container-xxl">
+  <h1 class="text-center mt-3">Shopping cart</h1>
+
+  <div class="row justify-content-center mt-lg-2">
+    <div *ngFor="let item of items" class="card m-4" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{item.productName}}</h5>
+        <span class="card-link">Quantity: {{item.quantity}}</span>
+        <span class="card-link">Price: {{item.productPrice}}$</span>
+      </div>
+      <div class="card-footer text-center">
+        <span class="card-link fw-bold me-md-5">Total: {{item.total}}$</span>
+        <button class="btn btn-danger" (click)="delete(item.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <hr>
+  <div class="row text-center">
+    <div class="col-sm-7">
+      <h3>Total: {{countOrder()}}$</h3>
+    </div>
+    <div class="col-sm-4">
+      <button class="btn btn-success w-75 fw-bolder" (click)="makeOrder()" [disabled]="items.length===0">Buy</button>
+    </div>
+  </div>
+
+</div>
