@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loginService.get(this.username, this.password).subscribe(
       value => {
-        let user = new User(value.userId, this.username, value.role, value.token);
+        let user = new User(value.id, this.username, value.role, value.token);
         localStorage.setItem('user', JSON.stringify(user))
         this.router.navigate(['/']).then(() => window.location.reload());
       },

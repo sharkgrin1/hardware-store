@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Role} from "./model/role";
 import {User} from "./model/user";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -37,5 +36,9 @@ export class AppComponent implements OnInit {
   logout(): void {
     localStorage.removeItem('user');
     window.location.reload();
+  }
+
+  public static getUser(): User {
+    return JSON.parse(localStorage.getItem('user'));
   }
 }
