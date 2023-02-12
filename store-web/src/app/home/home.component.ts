@@ -7,6 +7,7 @@ import {BehaviorSubject} from "rxjs";
 import {OrderItem} from "../model/order-item";
 import {OrderItemService} from "../services/order-item.service";
 import {AppComponent} from "../app.component";
+import {Role} from "../model/role";
 
 @Component({
   selector: 'app-home',
@@ -20,28 +21,44 @@ export class HomeComponent implements OnInit {
     id: [null],
     name: [null, [Validators.required]],
     price: [null, [Validators.required, Validators.min(0.01)]],
-    quantity: [null, [Validators.required, Validators.min(1)]]
+    quantity: [null, [Validators.required, Validators.min(0)]],
+    hidden: [false],
+    paid: [null]
   });
 
   constructor(private productService: ProductService, private orderItemService: OrderItemService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'));
+
     this.productService.findAll().subscribe(value => {
+        if (this.user.role === Role.ROLE_CUSTOMER) {
+          value = value.filter(x => !x.hidden);
+        }
         this.products.next(value);
       },
       error => console.error(error),
       () => {
+        const productArray = this.products.value;
+        if (this.user.role == Role.ROLE_ADMIN) {
+          const ids = productArray.map(x => x.id);
+          this.orderItemService.findPaidByProductIds(ids).subscribe(value => {
+            value.forEach(x => {
+              const product = productArray.find(pr => pr.id === x.productId);
+              product.paid = true;
+            });
+          });
+          return;
+        }
         this.orderItemService.findUnpaidByUserId().subscribe(value => {
-            this.products.value.forEach(x => {
+            productArray.forEach(x => {
               const item = value.find(item => item.productName === x.name);
               x.bought = !!item;
             })
           },
           error => console.error(error))
       });
-
-    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   onSubmit(): void {
@@ -83,7 +100,8 @@ export class HomeComponent implements OnInit {
       this.form.get('id').value,
       this.form.get('name').value,
       this.form.get('price').value,
-      this.form.get('quantity').value
+      this.form.get('quantity').value,
+      this.form.get('hidden').value
     );
   }
 
@@ -104,6 +122,7 @@ export class HomeComponent implements OnInit {
     );
     this.orderItemService.createItem(item).subscribe(value => {
         product.bought = true;
+        product.quantity = product.quantity - item.quantity;
       },
       error => console.error(error)
     );

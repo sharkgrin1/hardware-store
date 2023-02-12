@@ -40,7 +40,10 @@
         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modify" (click)="setForm(product)">
           Modify
         </button>
-        <button class="btn btn-danger me-2" (click)="delete(product.id)">Delete</button>
+        <button class="btn btn-danger me-2" [disabled]="product.paid" (click)="delete(product.id)">Delete</button>
+        <div class="row" *ngIf="product.hidden">
+          <span class="text-muted">Hidden</span>
+        </div>
       </div>
       <div *ngIf="user.role=='ROLE_CUSTOMER'" class="card-footer text-center">
         <form class="row">
@@ -48,7 +51,9 @@
             <input required type="number" inputmode="numeric" class="form-control" placeholder="Quantity" min="1"
                    [max]="product.quantity" #itemQuan></div>
           <div class="col">
-            <button class="btn btn-success" [disabled]="product.bought" (click)="buyItem(itemQuan.value, product);itemQuan.value=null">Buy</button>
+            <button class="btn btn-success" [disabled]="product.bought || product.quantity===0"
+                    (click)="buyItem(itemQuan.value, product);itemQuan.value=null">Buy
+            </button>
           </div>
         </form>
         <div class="row" *ngIf="product.bought">
@@ -84,6 +89,12 @@
                    id="modalQuantity"
                    placeholder="Quantity" name="quantity" min="1">
             <label for="modalQuantity">Quantity</label>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <input formControlName="hidden" class="form-check-input mt-0" type="checkbox">
+            </div>
+            <input type="text" class="form-control" disabled value="Hidden">
           </div>
         </div>
         <div class="modal-footer">
