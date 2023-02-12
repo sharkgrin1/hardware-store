@@ -8,6 +8,7 @@ import {AuthGuard} from "./guard/auth-guard.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HomeModule} from "./home/home.module";
 import {ErrorInterceptor} from "./guard/error-interceptor";
+import {ShoppingCartModule} from "./shopping-cart/shopping-cart.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {ErrorInterceptor} from "./guard/error-interceptor";
     BrowserModule,
     AppRoutingModule,
     LoginModule,
-    HomeModule
+    HomeModule,
+    ShoppingCartModule
   ],
   providers: [
     AuthGuard,
