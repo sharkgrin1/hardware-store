@@ -18,11 +18,11 @@ public class UserService {
     public User login(User user) {
         final var found = userRepository.findByUsername(user.getUsername());
         if (found.isEmpty()) {
-            throw new RuntimeException(); //todo: 403 Forbidden
+            throw new RuntimeException("User does not exist");
         }
         if (!passwordEncoder.matches(user.getPassword(), found.get().getPassword())) {
-            throw new RuntimeException(); //todo: 403 Forbidden
+            throw new RuntimeException("Password is wrogn");
         }
-        return user;
+        return found.get();
     }
 }
