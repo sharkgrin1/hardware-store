@@ -5,12 +5,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import store.api.domain.Type;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 
 public class User implements UserDetails {
     private int id;
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
     private Type type;
 

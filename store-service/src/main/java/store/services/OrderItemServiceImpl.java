@@ -66,4 +66,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     public void deleteUnpaidByProductId(int productId) {
         orderItemRepository.deleteUnpaidByProductId(productId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void updateOrderId(List<Integer> ids, int orderId) {
+        orderItemRepository.updateOrderId(ids, orderId);
+    }
 }

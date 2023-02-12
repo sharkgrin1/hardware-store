@@ -16,4 +16,5 @@ public interface OrderItemRepository {
 
     void deleteUnpaidByProductId(int productId);
 
+    void updateOrderId(List<Integer> ids, int orderId);
 }

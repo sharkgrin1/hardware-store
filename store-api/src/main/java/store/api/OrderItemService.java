@@ -13,4 +13,6 @@ public interface OrderItemService {
     void delete(int id);
 
     void deleteUnpaidByProductId(int productId);
+
+    void updateOrderId(List<Integer> ids, int orderId);
 }

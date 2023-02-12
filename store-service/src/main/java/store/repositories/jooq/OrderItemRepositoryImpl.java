@@ -56,4 +56,12 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
                 .where(ORDER_ITEMS.PRODUCT_ID.eq(productId))
                 .execute();
     }
+
+    @Override
+    public void updateOrderId(List<Integer> ids, int orderId) {
+        dsl.update(ORDER_ITEMS)
+                .set(ORDER_ITEMS.ORDER_ID, orderId)
+                .where(ORDER_ITEMS.ID.in(ids))
+                .execute();
+    }
 }
