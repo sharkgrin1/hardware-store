@@ -28,7 +28,7 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping
+    @GetMapping(consumes = MediaType.ALL_VALUE)
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<OrderItemDisplay> findUnpaidByUserId(@RequestParam(HttpConstants.PARAM_USER_ID) int userId) {
         return orderItemService.findUnpaidByUserId(userId);
