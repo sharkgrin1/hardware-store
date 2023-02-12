@@ -53,7 +53,7 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     @Override
     public void deleteUnpaidByProductId(int productId) {
         dsl.deleteFrom(ORDER_ITEMS)
-                .where(ORDER_ITEMS.PRODUCT_ID.eq(productId))
+                .where(ORDER_ITEMS.PRODUCT_ID.eq(productId).and(ORDER_ITEMS.ORDER_ID.isNull()))
                 .execute();
     }
 
