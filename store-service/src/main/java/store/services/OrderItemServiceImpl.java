@@ -68,7 +68,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public void updateOrderId(List<Integer> ids, int orderId) {
         orderItemRepository.updateOrderId(ids, orderId);
     }

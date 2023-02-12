@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import store.api.OrderItemService;
 import store.api.ProductService;
 import store.api.domain.Product;
 import store.commons.HttpConstants;
@@ -21,9 +22,11 @@ import java.util.List;
 @RequestMapping(path = HttpConstants.PATH_PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
     private final ProductService productService;
+    private final OrderItemService orderItemService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OrderItemService orderItemService) {
         this.productService = productService;
+        this.orderItemService = orderItemService;
     }
 
     @GetMapping
@@ -48,5 +51,6 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable(HttpConstants.PARAM_ID) int id) {
         productService.delete(id);
+        orderItemService.deleteUnpaidByProductId(id);
     }
 }

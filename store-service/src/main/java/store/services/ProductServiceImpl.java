@@ -3,7 +3,6 @@ package store.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import store.api.OrderItemService;
 import store.api.ProductService;
 import store.api.domain.Product;
 import store.repositories.ProductRepository;
@@ -13,11 +12,9 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final OrderItemService orderItemService;
 
-    public ProductServiceImpl(ProductRepository productRepository, OrderItemService orderItemService) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.orderItemService = orderItemService;
     }
 
     @Override
@@ -35,8 +32,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public Product create(Product product) {
-        productRepository.create(product);
-        return product;
+        return productRepository.create(product);
     }
 
     @Override
@@ -51,7 +47,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public void delete(int id) {
         checkExistence(id);
-        orderItemService.deleteUnpaidByProductId(id);
         productRepository.delete(id);
     }
 
