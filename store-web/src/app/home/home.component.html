@@ -1,0 +1,97 @@
+<div class="container-xxl">
+
+  <form *ngIf="user.role=='ROLE_ADMIN'" class="row justify-content-center mt-lg-5" [formGroup]="form"
+        (ngSubmit)="onSubmit()">
+    <div class="col">
+      <div class="form-floating mb-3">
+        <input formControlName="name" class="form-control" id="name" placeholder="Name" name="name">
+        <label for="name">Name</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating mb-3">
+        <input formControlName="price" type="number" inputmode="decimal" class="form-control" id="price"
+               placeholder="Price" name="price" min="0.01">
+        <label for="price">Price</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating mb-3">
+        <input formControlName="quantity" type="number" inputmode="numeric" class="form-control" id="quantity"
+               placeholder="Quantity" name="quantity" min="1">
+        <label for="quantity">Quantity</label>
+      </div>
+    </div>
+    <div class="col">
+      <button class="btn btn-success" [disabled]="form.invalid">Add new product</button>
+    </div>
+
+    <hr class="border border-dark border-1 opacity-25">
+  </form>
+
+  <div class="row justify-content-center mt-lg-1">
+    <div *ngFor="let product of products | async" class="card m-4" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+        <span class="card-link">Price: {{product.price}}$</span>
+        <span class="card-link">Quantity: {{product.quantity}}</span>
+      </div>
+      <div *ngIf="user.role=='ROLE_ADMIN'" class="card-footer text-center">
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modify" (click)="setForm(product)">
+          Modify
+        </button>
+        <button class="btn btn-danger me-2" (click)="delete(product.id)">Delete</button>
+      </div>
+      <div *ngIf="user.role=='ROLE_CUSTOMER'" class="card-footer text-center">
+        <form class="row">
+          <div class="col">
+            <input required type="number" inputmode="numeric" class="form-control" placeholder="Quantity" min="1"
+                   [max]="product.quantity" #itemQuan></div>
+          <div class="col">
+            <button class="btn btn-success" [disabled]="product.bought" (click)="buyItem(itemQuan.value, product);itemQuan.value=null">Buy</button>
+          </div>
+        </form>
+        <div class="row" *ngIf="product.bought">
+          <span class="text-muted">In shopping cart</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modify" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modifyModalLabel">Modify product</h1>
+      </div>
+      <form *ngIf="user.role=='ROLE_ADMIN'" [formGroup]="form"
+            (ngSubmit)="onSubmitModify()">
+        <div class="modal-body">
+
+          <div class="form-floating mb-3">
+            <input formControlName="name" class="form-control" id="modalName" placeholder="Name" name="name">
+            <label for="modalName">Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input formControlName="price" type="number" inputmode="decimal" class="form-control" id="modalPrice"
+                   placeholder="Price" name="price" min="0.01">
+            <label for="modalPrice">Price</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input formControlName="quantity" type="number" inputmode="numeric" class="form-control"
+                   id="modalQuantity"
+                   placeholder="Quantity" name="quantity" min="1">
+            <label for="modalQuantity">Quantity</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModify()">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="form.invalid">Save changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
