@@ -21,9 +21,30 @@ export class OrderItemService {
     });
   }
 
+  public findPaidByProductIds(productIds:number[]): Observable<OrderItem[]> {
+    const user = AppComponent.getUser();
+    return this.http.get<OrderItem[]>('/api/items/paid', {
+      params: {
+        username: user.username,
+        token: user.token,
+        productIds: productIds.toString()
+      }
+    });
+  }
+
   public createItem(item: OrderItem): Observable<void> {
     const user = AppComponent.getUser();
     return this.http.post<void>('/api/items', item, {
+      params: {
+        username: user.username,
+        token: user.token
+      }
+    });
+  }
+
+  public deleteItem(id: number): Observable<void> {
+    const user = AppComponent.getUser();
+    return this.http.delete<void>(`/api/items/${id}`, {
       params: {
         username: user.username,
         token: user.token
