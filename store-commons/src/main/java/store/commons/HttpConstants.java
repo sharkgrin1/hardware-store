@@ -10,6 +10,8 @@ public final class HttpConstants {
     public static final String PATH_PARAM_ID = "/{id}";
     public static final String PATH_ITEMS = "/items";
     public static final String PARAM_USER_ID = "userId";
+    public static final String PATH_ORDERS = "/orders";
+    public static final String PARAM_ITEMS = "items";
 
     private HttpConstants() {
         throw new UnsupportedOperationException();

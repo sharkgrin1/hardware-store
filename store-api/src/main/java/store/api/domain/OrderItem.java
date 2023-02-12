@@ -10,7 +10,7 @@ public class OrderItem {
     private int productId;
     @Min(1)
     private int quantity;
-    private int orderId;
+    private Integer orderId;
 
     public int getId() {
         return id;
@@ -44,11 +44,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public int getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 }

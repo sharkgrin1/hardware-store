@@ -1,10 +1,14 @@
 package store.api.domain;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 public class Order {
     private int id;
+    @Min(1)
     private int userId;
+    @DecimalMin("0.01")
     private BigDecimal total;
     private boolean status;
 
