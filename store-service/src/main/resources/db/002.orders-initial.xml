@@ -14,7 +14,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_id" type="INT">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="total" type="DECIMAL(20,2)">
                 <constraints nullable="false"/>
