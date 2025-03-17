@@ -16,13 +16,14 @@ public class UserService {
     }
 
     public User login(User user) {
-        final var found = userRepository.findByUsername(user.getUsername());
-        if (found.isEmpty()) {
+        final var optionalUser = userRepository.findByUsername(user.getUsername());
+        if (optionalUser.isEmpty()) {
             throw new RuntimeException("User does not exist");
         }
-        if (!passwordEncoder.matches(user.getPassword(), found.get().getPassword())) {
+        User foundUser = optionalUser.get();
+        if (!passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
             throw new RuntimeException("Password is wrong");
         }
-        return found.get();
+        return foundUser;
     }
 }

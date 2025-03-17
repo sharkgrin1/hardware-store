@@ -9,6 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HomeModule} from "./home/home.module";
 import {ErrorInterceptor} from "./guard/error-interceptor";
 import {ShoppingCartModule} from "./shopping-cart/shopping-cart.module";
+import {AuthInterceptor} from "./guard/auth-interceptor";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {ShoppingCartModule} from "./shopping-cart/shopping-cart.module";
   ],
   providers: [
     AuthGuard,
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
