@@ -42,8 +42,8 @@ _The main reason for choosing_: Maven, unlike Gradle, has stable versions with b
 _The main reason for choosing_: Angular is suitable for projects that will scale in the future. In this case, the hardware store will also increase sooner or later.  The MVVM design pattern guarantees convenient maintenance of modules (components in the context of Angular). Typing in TypeScript (which is used in Angular) made it possible to prevent errors made in the process of modifying the code before execution. High compilation speed was also a definite plus when choosing TypeScript.
 
 ## Authentication and authorization
-All user passwords are securely encrypted with BCrypt. After a successful login, the user is issued a token. The token is hashed using the md5 algorithm. It is valid for 1 day.
-A separate filter and provider were created to authenticate requests. The filter was implemented in the chain of filters provided by Spring Security.
+All user passwords are securely encrypted with BCrypt. After a successful login, the user is issued a JWT token. JWT algorithm is HMAC using SHA-256. It is valid for 1 day.
+A separate filter was created to authenticate requests. The filter was implemented in the chain of filters provided by Spring Security.
 
 The system uses roles for user authorization. Each request has its own set of user roles defined.
 
