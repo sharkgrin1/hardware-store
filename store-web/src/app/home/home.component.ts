@@ -12,7 +12,8 @@ import {Role} from "../model/role";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  standalone: false
 })
 export class HomeComponent implements OnInit {
   products: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
@@ -32,14 +33,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
 
-    this.productService.findAll().subscribe(value => {
+    this.productService.findAll().subscribe({
+      next: (value) => {
         if (this.user.role === Role.ROLE_CUSTOMER) {
           value = value.filter(x => !x.hidden);
         }
         this.products.next(value);
       },
-      error => console.error(error),
-      () => {
+      error: (error) => console.error(error),
+      complete: () => {
         const productArray = this.products.value;
         if (this.user.role == Role.ROLE_ADMIN) {
           const ids = productArray.map(x => x.id);
@@ -51,47 +53,55 @@ export class HomeComponent implements OnInit {
           });
           return;
         }
-        this.orderItemService.findUnpaidByUserId().subscribe(value => {
+        this.orderItemService.findUnpaidByUserId().subscribe({
+          next: (value) => {
             productArray.forEach(x => {
               const item = value.find(item => item.productName === x.name);
               x.bought = !!item;
             })
           },
-          error => console.error(error))
-      });
+          error: (error) => console.error(error)
+        })
+      }
+    });
   }
 
   onSubmit(): void {
     const product = this.getProduct();
-    this.productService.create(product).subscribe(value => {
+    this.productService.create(product).subscribe({
+      next: (value) => {
         this.products.value.push(value);
         this.form.reset();
       },
-      error => console.error(error)
-    );
+      error: (error) => console.error(error)
+    });
   }
 
   delete(productId: number) {
-    this.productService.delete(productId).subscribe(value => {
+    this.productService.delete(productId).subscribe({
+      next: () => {
         const productArray = this.products.value;
         let index = productArray.findIndex(x => x.id == productId);
         productArray.splice(index, 1);
         delete productArray[index];
         this.products.next(productArray);
       },
-      error => console.error(error)
-    );
+      error: (error) => console.error(error)
+    });
   }
 
   onSubmitModify(): void {
     const product = this.getProduct();
-    this.productService.update(product).subscribe(value => {
-        const productArray = this.products.value;
-        let index = productArray.findIndex(x => x.id == product.id);
-        productArray[index] = value;
-        this.form.reset();
-      },
-      error => console.error(error)
+    this.productService.update(product).subscribe(
+      {
+        next: (value) => {
+          const productArray = this.products.value;
+          let index = productArray.findIndex(x => x.id == product.id);
+          productArray[index] = value;
+          this.form.reset();
+        },
+        error: (error) => console.error(error)
+      }
     );
   }
 
@@ -120,11 +130,12 @@ export class HomeComponent implements OnInit {
       product.id,
       Number.parseInt(value)
     );
-    this.orderItemService.createItem(item).subscribe(value => {
+    this.orderItemService.createItem(item).subscribe({
+      next: () => {
         product.bought = true;
         product.quantity = product.quantity - item.quantity;
       },
-      error => console.error(error)
-    );
+      error: (error) => console.error(error)
+    });
   }
 }

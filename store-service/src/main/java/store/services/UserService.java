@@ -21,7 +21,7 @@ public class UserService {
             throw new RuntimeException("User does not exist");
         }
         if (!passwordEncoder.matches(user.getPassword(), found.get().getPassword())) {
-            throw new RuntimeException("Password is wrogn");
+            throw new RuntimeException("Password is wrong");
         }
         return found.get();
     }

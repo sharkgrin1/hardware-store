@@ -8,7 +8,8 @@ import {OrderService} from "../services/order.service";
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
-  styleUrls: ['./shopping-cart.component.css']
+  styleUrls: ['./shopping-cart.component.css'],
+  standalone: false
 })
 export class ShoppingCartComponent implements OnInit {
 
@@ -18,19 +19,18 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orderItemService.findUnpaidByUserId().subscribe(value => {
-        this.items = value;
-      },
-      error => console.error(error)
-    );
+    this.orderItemService.findUnpaidByUserId().subscribe({
+      next: (value) => this.items = value,
+      error: (error) => console.error(error),
+    });
   }
 
   delete(id: number): void {
-    this.orderItemService.deleteItem(id).subscribe(value => {
-        this.items.splice(this.items.findIndex(x => x.id === id), 1);
-      },
-      error => console.error(error)
-    );
+    this.orderItemService.deleteItem(id).subscribe({
+      next: () =>
+        this.items.splice(this.items.findIndex(x => x.id === id), 1),
+      error: (error) => console.error(error)
+    });
   }
 
   countOrder(): number {
@@ -44,10 +44,9 @@ export class ShoppingCartComponent implements OnInit {
       false
     );
     const itemIds = this.items.map(x => x.id);
-    this.orderService.create(order, itemIds).subscribe(value => {
-        this.items = [];
-      },
-      error => console.error(error)
-    );
+    this.orderService.create(order, itemIds).subscribe({
+      next: () => this.items = [],
+      error: (error) => console.error(error)
+    });
   }
 }
